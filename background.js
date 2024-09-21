@@ -45,10 +45,17 @@ function checkIfRegistrationPageLoaded() {
     return true;
 }
 
+function openRegistrationPage() {
+    chrome.tabs.update({ url: "https://acadinfo.wustl.edu/apps/Registration/" }, () => {
+        startRegistrationCheck(); // Start checking after opening the page
+    });
+}
+
+
 // Listen for messages from the popup.js
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message.action === 'start') {
-        startRegistrationCheck();
+        openRegistrationPage();
         sendResponse({status: 'started'});
     } else if (message.action === 'stop') {
         stopRegistrationCheck();
