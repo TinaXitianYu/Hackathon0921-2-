@@ -2,7 +2,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Define the pixel size and the grid for the Sun Wukong character
-const pixelSize = 10;  // Size of each pixel block
+const pixelSize = 20;  // Size of each pixel block
 
 // Define the pixel grid for the Sun Wukong sprite
 const wukongPixels = [
