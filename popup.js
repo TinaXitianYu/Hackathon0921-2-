@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const goButton = document.getElementById('goButton');
+  const startButton = document.getElementById('startButton');
   const inputField = document.getElementById('registrationTime');
 
   // Add event listener for the Go button
