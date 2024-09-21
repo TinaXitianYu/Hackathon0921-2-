@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   startButton.addEventListener('click', function() {
-    triggerBackgroundProcess(); // Start background process after countdown
+    triggerBackgroundProcess();
   });
 
   function startCountdown(targetTime) {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (timeDifference <= 0) {
         clearInterval(countdownInterval);
         countdownElement.textContent = '00:00';
-        alert("Your registration time has arrived! Please proceed.");
+        alert("It's registration time! Please proceed.");
         triggerBackgroundProcess();
         return;
       }
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function triggerBackgroundProcess() {
-    alert("Started the background successfully");
+    alert("Grabbing Started");
     // Additional background processes can be added here
   }
 });
