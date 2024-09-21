@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "CourseGrab Extension",
+  "name": "CourseGrabber",
   "version": "1.0",
   "description": "A simple Chrome extension",
   "action": {
-    "default_popup": "CourseGrab.html",
+    "default_popup": "CourseGrabber.html",
     "default_icon": "CourseGrab.png"
   },
   "permissions": ["storage"]
