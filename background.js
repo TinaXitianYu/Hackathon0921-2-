@@ -34,8 +34,15 @@ function stopRegistrationCheck() {
 // Function to determine if the registration page has loaded
 function checkIfRegistrationPageLoaded() {
     // Check if the "Registration Worksheet" text is present on the page
-    const registrationWorksheet = document.querySelector('td.labelColumn');
-    return registrationWorksheet && registrationWorksheet.textContent.includes('Registration Worksheet');
+    const registrationWorksheet = document.querySelectorAll('td.labelColumn');
+    let found = false;
+    registrationWorksheet.forEach((element) => {
+        if (element.textContent.includes('Registration Worksheet')){
+            stopRegistrationCheck();
+            found = true
+        }
+    });
+    return true;
 }
 
 // Listen for messages from the popup.js
