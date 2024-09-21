@@ -1,13 +1,17 @@
+
 {
   "manifest_version": 3,
   "name": "CourseGrabber",
-  "version": "1.0",
+  "version": "1.1", 
   "description": "Helps students grab courses",
   "action": {
-    "default_popup": "CourseGrabber.html",
-    "default_icon": "CourseGrabber.png"
+    "default_popup": "CourseGrabber.html", 
+    "default_icon": "CourseGrabber.png"   
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "notifications"],  
+  "background": {
+    "service_worker": "background.js" 
+  },
   "content_scripts": [
     {
       "matches": [

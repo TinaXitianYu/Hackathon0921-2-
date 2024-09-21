@@ -1,14 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
+  const confirmTimeButton = document.getElementById('confirmTimeButton');
+  const startImmediatelyButton = document.getElementById('startImmediatelyButton');
   const startButton = document.getElementById('startButton');
+  const countdownElement = document.getElementById('countdown');
+  const countdownSection = document.getElementById('countdownSection');
+  const registrationTimeInput = document.getElementById('registrationTime');
+
+  let countdownInterval;
+
+  // Handle "Confirm Time" button
+  confirmTimeButton.addEventListener('click', function() {
+    // Get the selected date and time from input
+    const selectedTime = new Date(registrationTimeInput.value);
+
+    // Check if the input is valid
+    if (isNaN(selectedTime.getTime())) {
+      alert('Please select a valid date and time.');
+      return;
+    }
+
+    // Show the countdown section
+    countdownSection.style.display = 'block';
+
+    // Hide the registration time selection
+    confirmTimeButton.style.display = 'none';
+    registrationTimeInput.style.display = 'none';
+    startImmediatelyButton.style.display = 'none'; // Hide "Start Immediately" button
+
+    // Start the countdown
+    startCountdown(selectedTime);
+  });
+
+  // Handle "Start Immediately" button
+  startImmediatelyButton.addEventListener('click', function() {
+    // Skip the countdown entirely and trigger the background action
+    triggerBackgroundProcess();
+  });
 
   startButton.addEventListener('click', function() {
-    // Show a reminder alert when the Start button is clicked
-    alert("Make sure your registration time is about to start!");
-    
-    // Optionally, you can also set a timer for a reminder if needed
-    // Example: Show a reminder in 2 minutes
-    setTimeout(() => {
-      alert("Reminder: Your registration time is about to start!");
-    }, 120000); // 120000 milliseconds = 2 minutes
+    triggerBackgroundProcess();
   });
+
+  function startCountdown(targetTime) {
+    countdownInterval = setInterval(function() {
+      const currentTime = new Date();
+      const timeDifference = targetTime - currentTime;
+
+      if (timeDifference <= 0) {
+        clearInterval(countdownInterval);
+        countdownElement.textContent = '00:00';
+        alert("Your registration time has arrived! Please proceed.");
+        triggerBackgroundProcess();
+        return;
+      }
+
+      // Convert timeDifference from milliseconds to minutes and seconds
+      const minutes = Math.floor((timeDifference / 1000) / 60);
+      const seconds = Math.floor((timeDifference / 1000) % 60);
+
+      // Display the countdown in MM:SS format
+      countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 1000); // 1000 ms = 1 second
+  }
+
+  // Function to trigger the background process
+  function triggerBackgroundProcess() {
+    alert("Started the background successfully");
+
+    // Optionally: Perform the actual background task here, such as sending notifications or performing some action in the background.
+    // For now, we just show a message.
+  }
 });
