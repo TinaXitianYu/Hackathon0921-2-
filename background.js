@@ -19,7 +19,6 @@ function startRegistrationCheck() {
                     func: function() {
                         const registrationWorksheet = document.querySelectorAll('td.labelColumn');
                         console.log(`Found ${registrationWorksheet.length} 'td.labelColumn' elements on the page.`);
-                        console.log(`hi`);
                         let found = false;
                         registrationWorksheet.forEach((element) => {
                             console.log(`Checking element text: ${element.textContent}`);
