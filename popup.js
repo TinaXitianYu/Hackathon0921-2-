@@ -55,15 +55,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (timeDifference <= 0) {
         clearInterval(countdownInterval);
-        countdownElement.textContent = '00:00';
+        countdownElement.textContent = '00:00:00';
         alert("It's registration time! Please proceed.");
         triggerBackgroundProcess();
         return;
       }
 
-      const minutes = Math.floor((timeDifference / 1000) / 60);
+      const hours = Math.floor((timeDifference / 1000) / 3600);
+      const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
       const seconds = Math.floor((timeDifference / 1000) % 60);
-      countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }, 1000);
   }
 
