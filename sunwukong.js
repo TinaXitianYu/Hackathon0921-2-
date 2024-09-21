@@ -1,12 +1,13 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const startGameButton = document.getElementById('startGameButton');
+const playAgainButton = document.getElementById('playAgainButton');
 
 // Define the pixel size and the grid for the Sun Wukong character
 const pixelSize = 3;  // Size of each pixel block
 
 // Define the pixel grid for the Sun Wukong sprite
 const wukongPixels = [
-    // Each element corresponds to a color code or null (for transparent space)
     ['#000000', '#000000', '#000000', null, null, '#000000', '#000000', '#000000'],
     ['#000000', '#FFDDC1', '#F9A602', '#D35400', '#D35400', '#F9A602', '#FFDDC1', '#000000'],
     ['#000000', '#D35400', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#D35400', '#000000'],
@@ -23,7 +24,6 @@ function drawWukong(x, y) {
         for (let col = 0; col < wukongPixels[row].length; col++) {
             const color = wukongPixels[row][col];
             if (color) {
-                // Set the color and draw each pixel block
                 ctx.fillStyle = color;
                 ctx.fillRect(x + col * pixelSize, y + row * pixelSize, pixelSize, pixelSize);
             }
@@ -70,9 +70,9 @@ function createCactus() {
     const cactus = {
         x: canvas.width,
         y: 160,
-        width: 20 + Math.random() * 10, // Random width for more variation
-        height: 40 + Math.random() * 10, // Random height for more variation
-        dx: baseSpeed, // Initial speed
+        width: 20 + Math.random() * 10,
+        height: 40 + Math.random() * 10,
+        dx: baseSpeed,
         draw() {
             ctx.fillStyle = "green";
             ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -80,7 +80,6 @@ function createCactus() {
         update() {
             this.x += this.dx;
             if (this.x + this.width < 0) {
-                // Remove the cactus when it goes off-screen
                 obstacles = obstacles.filter(ob => ob !== this);
             }
         }
@@ -92,7 +91,6 @@ function createCactus() {
 function generateObstacles(timestamp) {
     if (timestamp >= nextCactusTime) {
         createCactus();
-        // Set next cactus time between 0.5 and 2 seconds
         nextCactusTime = timestamp + (500 + Math.random() * 1500);
     }
 }
@@ -122,20 +120,17 @@ function gameLoop(timestamp) {
     dino.draw();
     dino.update();
 
-    // Create random obstacles based on time
     generateObstacles(timestamp);
 
-    // Update and draw obstacles
     obstacles.forEach(cactus => {
         cactus.draw();
         cactus.update();
         if (isCollision(cactus)) {
-            alert("Game Over! Press OK to restart.");
-            resetGame();
+            cancelAnimationFrame(gameLoop);
+            askToContinue();
         }
     });
 
-    // Gradually increase speed over time
     baseSpeed -= speedIncreaseRate;
     obstacles.forEach(cactus => cactus.dx = baseSpeed);
 
@@ -143,14 +138,14 @@ function gameLoop(timestamp) {
     requestAnimationFrame(gameLoop);
 }
 
-// Reset game state
-function resetGame() {
-    obstacles = []; // Clear obstacles
-    baseSpeed = -7;  // Reset speed
-    nextCactusTime = 0; // Reset cactus generation timer
-    dino.y = 150;  // Reset dino's position
-    dino.grounded = true;
-}
+// Ask if the player wants to continue
+function askToContinue() {
+    const continueGame = confirm("Game Over! Do you want to continue?");
+    if (continueGame) {
+        resetGame();
+        requestAnimationFrame(gameLoop);
+    } else {
+        playAgainButton.style.display = 'block'; // Show the "Play Again" button
+        playAgainButton.onclick = function() {
+            playAgainButton.style.display = 'none';
 
-// Start the game
-requestAnimationFrame(gameLoop);
