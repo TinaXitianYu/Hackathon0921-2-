@@ -27,6 +27,17 @@
       #countdownSection {
         display: none; /* Hide countdown section initially */
       }
+      /* Style for the 'Start Immediately' button */
+      .immediateButton {
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .immediateButton:hover {
+        background-color: darkred;
+      }
     </style>
   </head>
   <body>
@@ -35,7 +46,9 @@
     <!-- Input field for selecting date and time -->
     <input type="datetime-local" id="registrationTime" />
 
+    <!-- Confirm and Start Immediately buttons -->
     <button id="confirmTimeButton">Confirm Time</button>
+    <button id="startImmediatelyButton" class="immediateButton">Start Immediately</button>
 
     <!-- Countdown section (hidden initially) -->
     <div id="countdownSection">
