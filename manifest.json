@@ -5,7 +5,7 @@
   "description": "Helps students grab courses",
   "action": {
     "default_popup": "CourseGrabber.html",
-    "default_icon": "CourseGrab.png"
+    "default_icon": "CourseGrabber.png"
   },
   "permissions": ["storage"],
   "content_scripts": [
