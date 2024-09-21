@@ -9,7 +9,7 @@
         font-family: Arial, sans-serif;
         padding: 20px;
       }
-      input, button, select {
+      input, button {
         margin-top: 10px;
         width: 100%;
         padding: 10px;
@@ -24,10 +24,7 @@
       button:hover {
         background-color: #0056b3;
       }
-      #countdownSection {
-        display: none; /* Hide countdown section initially */
-      }
-      /* Style for the 'Start Immediately' button */
+      /* Red button for 'YES' */
       .immediateButton {
         background-color: red;
         color: white;
@@ -38,20 +35,29 @@
       .immediateButton:hover {
         background-color: darkred;
       }
+      /* Hide sections initially */
+      .hidden {
+        display: none;
+      }
     </style>
   </head>
   <body>
-    <h1>Select your registration time</h1>
-    
-    <!-- Input field for selecting date and time -->
-    <input type="datetime-local" id="registrationTime" />
+    <!-- Preceding page section -->
+    <div id="startNowOrPlanSection">
+      <h1>Are you within the registration time?</h1>
+      <button id="startNowButton" class="immediateButton">YES, start now</button>
+      <button id="planButton">NO, plan</button>
+    </div>
 
-    <!-- Confirm and Start Immediately buttons -->
-    <button id="confirmTimeButton">Confirm Time</button>
-    <button id="startImmediatelyButton" class="immediateButton">Start Immediately</button>
+    <!-- Page for selecting registration time -->
+    <div id="registrationSection" class="hidden">
+      <h1>Select your registration time</h1>
+      <input type="datetime-local" id="registrationTime" />
+      <button id="confirmTimeButton">Confirm Time</button>
+    </div>
 
     <!-- Countdown section (hidden initially) -->
-    <div id="countdownSection">
+    <div id="countdownSection" class="hidden">
       <h1>Countdown:</h1>
       <p id="countdown">00:00</p>
       <p>Note: We recommend you to start grabbing at least 2 minutes before your registration!</p>
