@@ -1,23 +1,48 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Load the dino image
-const dinoImage = new Image();
-dinoImage.src = 'https://raw.githubusercontent.com/TinaXitianYu/Hackathon0921-2-/main/sunwukong.png
-';  // Use the correct path to the uploaded image
+// Define the pixel size and the grid for the Sun Wukong character
+const pixelSize = 10;  // Size of each pixel block
+
+// Define the pixel grid for the Sun Wukong sprite
+const wukongPixels = [
+    // Each element corresponds to a color code or null (for transparent space)
+    ['#000000', '#000000', '#000000', null, null, '#000000', '#000000', '#000000'],
+    ['#000000', '#FFDDC1', '#F9A602', '#D35400', '#D35400', '#F9A602', '#FFDDC1', '#000000'],
+    ['#000000', '#D35400', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#D35400', '#000000'],
+    ['#D35400', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#D35400'],
+    ['#000000', '#F9A602', '#D35400', '#D35400', '#F9A602', '#D35400', '#F9A602', '#000000'],
+    ['#000000', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#000000'],
+    [null, '#C0392B', '#C0392B', null, null, '#C0392B', '#C0392B', null],
+    [null, '#C0392B', '#C0392B', null, null, '#C0392B', '#C0392B', null],
+];
+
+// Function to draw the sprite on the canvas
+function drawWukong(x, y) {
+    for (let row = 0; row < wukongPixels.length; row++) {
+        for (let col = 0; col < wukongPixels[row].length; col++) {
+            const color = wukongPixels[row][col];
+            if (color) {
+                // Set the color and draw each pixel block
+                ctx.fillStyle = color;
+                ctx.fillRect(x + col * pixelSize, y + row * pixelSize, pixelSize, pixelSize);
+            }
+        }
+    }
+}
 
 // Dino character
 const dino = {
     x: 50,
     y: 150,
-    width: 40,  // Update this to match your image dimensions
-    height: 40, // Update this to match your image dimensions
+    width: 20,
+    height: 20,
     dy: 0,
     gravity: 0.6,
     jump: -10,
     grounded: true,
     draw() {
-        ctx.drawImage(dinoImage, this.x, this.y, this.width, this.height); // Draw the image
+        drawWukong(this.x, this.y);  // Draw Sun Wukong as the Dino character
     },
     update() {
         if (!this.grounded) {
@@ -127,7 +152,5 @@ function resetGame() {
     dino.grounded = true;
 }
 
-// Start the game when the image is loaded
-dinoImage.onload = function() {
-    requestAnimationFrame(gameLoop);
-};
+// Start the game
+requestAnimationFrame(gameLoop);
