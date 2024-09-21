@@ -3,7 +3,7 @@ const ctx = canvas.getContext('2d');
 
 // Load the dino image
 const dinoImage = new Image();
-dinoImage.src = 'path/to/your/dino-image.png';  // Use the correct path to the uploaded image
+dinoImage.src = 'sunwukong.png';  // Use the correct path to the uploaded image
 
 // Dino character
 const dino = {
