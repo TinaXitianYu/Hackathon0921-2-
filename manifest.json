@@ -2,7 +2,7 @@
 {
   "manifest_version": 3,
   "name": "CourseGrabber",
-  "version": "1.1", 
+  "version": "1.1.1", 
   "description": "Helps students grab courses",
   "action": {
     "default_popup": "CourseGrabber.html", 
