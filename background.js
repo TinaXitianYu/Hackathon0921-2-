@@ -14,7 +14,7 @@ function startRegistrationCheck() {
                         clearInterval(interval); //stops reloads
                         chrome.scripting.executeScript({
                             target: { tabId: tabs[0].id },
-                            files: ['content.js']
+                            files: ['contentScript.js']
                         });
                     } else {
                         // Reload the Webstac registration page to keep checking
