@@ -2,10 +2,19 @@
   "manifest_version": 3,
   "name": "CourseGrabber",
   "version": "1.0",
-  "description": "A simple Chrome extension",
+  "description": "Helps students grab courses",
   "action": {
     "default_popup": "CourseGrabber.html",
     "default_icon": "CourseGrab.png"
   },
   "permissions": ["storage"]
+  "content_scripts": [
+  {
+    "matches": [
+      "https://courses.wustl.edu/*",         // Matches WashU's course listing page
+      "https://acadinfo.wustl.edu/*"         // Matches another WashU academic info page
+    ],
+    "run_at": "document_end"      // Injects the script after the page has fully loaded
+  }
+]
 }
