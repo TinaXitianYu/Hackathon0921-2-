@@ -4,8 +4,8 @@
   "version": "1.0",
   "description": "A simple Chrome extension",
   "action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon.png"
+    "default_popup": "CourseGrab.html",
+    "default_icon": "CourseGrab.png"
   },
   "permissions": ["storage"]
 }
