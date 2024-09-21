@@ -9,13 +9,28 @@
       }
       input, button {
         margin-top: 10px;
+        width: 100%;
+        padding: 10px;
+      }
+      button {
+        background-color: #007BFF; /* Button color */
+        color: white; /* Text color */
+        border: none; /* Remove default border */
+        border-radius: 4px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+      }
+      button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
       }
     </style>
   </head>
   <body>
-    <h1>When is your registration time?</h1>
-    <input type="text" id="registrationTime" placeholder="Enter time" />
-    <button id="goButton">Go</button>
+    <h1>Start this program 2 minutes before your registration time</h1>
+    <button id="startButton">START</button>
+
+    <div id="status" style="margin-top: 20px;"></div> <!-- Area to display status -->
+
+    <script src="popup.js"></script>
 
     <script src="popup.js"></script>
   </body>
