@@ -1,19 +1,22 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Load the dino image
+const dinoImage = new Image();
+dinoImage.src = 'path/to/your/dino-image.png';  // Use the correct path to the uploaded image
+
 // Dino character
 const dino = {
     x: 50,
     y: 150,
-    width: 20,
-    height: 20,
+    width: 40,  // Update this to match your image dimensions
+    height: 40, // Update this to match your image dimensions
     dy: 0,
     gravity: 0.6,
     jump: -10,
     grounded: true,
     draw() {
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(dinoImage, this.x, this.y, this.width, this.height); // Draw the image
     },
     update() {
         if (!this.grounded) {
@@ -123,5 +126,7 @@ function resetGame() {
     dino.grounded = true;
 }
 
-// Start the game
-requestAnimationFrame(gameLoop);
+// Start the game when the image is loaded
+dinoImage.onload = function() {
+    requestAnimationFrame(gameLoop);
+};
