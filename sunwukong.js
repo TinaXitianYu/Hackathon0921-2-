@@ -30,8 +30,8 @@ const dino = {
 
 // Array to hold cactus obstacles
 let obstacles = [];
-let speedIncreaseRate = 0.005;  // Gradually increase the speed
-let baseSpeed = -7;  // Initial speed
+let speedIncreaseRate = 0.01;  // Gradually increase the speed
+let baseSpeed = -10;  // Initial speed
 
 // Track when to generate the next cactus
 let nextCactusTime = 0;
@@ -41,8 +41,8 @@ function createCactus() {
     const cactus = {
         x: canvas.width,
         y: 160,
-        width: 20 + Math.random() * 30, // Random width for more variation
-        height: 40 + Math.random() * 20, // Random height for more variation
+        width: 20 + Math.random() * 10, // Random width for more variation
+        height: 40 + Math.random() * 10, // Random height for more variation
         dx: baseSpeed, // Initial speed
         draw() {
             ctx.fillStyle = "green";
