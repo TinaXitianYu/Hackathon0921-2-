@@ -2,15 +2,15 @@
 {
   "manifest_version": 3,
   "name": "CourseGrabber",
-  "version": "1.1",  // Updated version for the new feature
+  "version": "1.1", 
   "description": "Helps students grab courses",
   "action": {
-    "default_popup": "CourseGrabber.html", // This will point to your HTML file
-    "default_icon": "CourseGrabber.png"    // You can keep your icon the same
+    "default_popup": "CourseGrabber.html", 
+    "default_icon": "CourseGrabber.png"   
   },
-  "permissions": ["storage", "notifications"],  // Added notifications permission for alerts
+  "permissions": ["storage", "notifications"],  
   "background": {
-    "service_worker": "background.js"  // If you want a background script for background processes
+    "service_worker": "background.js" 
   },
   "content_scripts": [
     {
