@@ -11,7 +11,7 @@ function startRegistrationCheck() {
                 }, (results) => {
                     if (results && results[0].result === true) {
                         // If registration page is loaded, stop the interval and start registration
-                        clearInterval(interval);
+                        clearInterval(interval); //stops reloads
                         chrome.scripting.executeScript({
                             target: { tabId: tabs[0].id },
                             files: ['content.js']
@@ -33,8 +33,9 @@ function stopRegistrationCheck() {
 
 // Function to determine if the registration page has loaded
 function checkIfRegistrationPageLoaded() {
-    // This function runs in the Webstac tab and checks for specific elements of the registration page
-    return document.querySelector('button.register') !== null;  // Adjust this based on the actual element for the registration button
+    // Yes if we can see RWS1 tab
+    const rws1Tab = document.querySelector('#ctl00_Body_tabRWS_tpnRWS1');
+    return rws1Tab && rws1Tab.style.display === 'block';
 }
 
 // Listen for messages from the popup.js
