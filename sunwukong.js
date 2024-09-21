@@ -30,8 +30,11 @@ const dino = {
 
 // Array to hold cactus obstacles
 let obstacles = [];
-let speedIncreaseRate = 0.002;  // Gradually increase the speed
-let baseSpeed = -5;  // Initial speed
+let speedIncreaseRate = 0.005;  // Gradually increase the speed
+let baseSpeed = -7;  // Initial speed
+
+// Track when to generate the next cactus
+let nextCactusTime = 0;
 
 // Function to create random cacti
 function createCactus() {
@@ -56,10 +59,12 @@ function createCactus() {
     obstacles.push(cactus);
 }
 
-// Function to randomly generate obstacles
-function generateObstacles() {
-    if (Math.random() < 0.01) {  // 1% chance of creating a cactus on each frame
+// Function to generate obstacles based on time
+function generateObstacles(timestamp) {
+    if (timestamp >= nextCactusTime) {
         createCactus();
+        // Set next cactus time between 0.5 and 2 seconds
+        nextCactusTime = timestamp + (500 + Math.random() * 1500);
     }
 }
 
@@ -82,14 +87,14 @@ function isCollision(cactus) {
 }
 
 // Game loop
-function gameLoop() {
+function gameLoop(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     dino.draw();
     dino.update();
 
-    // Create random obstacles
-    generateObstacles();
+    // Create random obstacles based on time
+    generateObstacles(timestamp);
 
     // Update and draw obstacles
     obstacles.forEach(cactus => {
@@ -97,9 +102,7 @@ function gameLoop() {
         cactus.update();
         if (isCollision(cactus)) {
             alert("Game Over! Press OK to restart.");
-            cactus.x = canvas.width; // Reset the cactus position
-            obstacles = []; // Clear obstacles after collision
-            baseSpeed = -5;  // Reset speed
+            resetGame();
         }
     });
 
@@ -107,8 +110,18 @@ function gameLoop() {
     baseSpeed -= speedIncreaseRate;
     obstacles.forEach(cactus => cactus.dx = baseSpeed);
 
+    // Request next frame
     requestAnimationFrame(gameLoop);
 }
 
+// Reset game state
+function resetGame() {
+    obstacles = []; // Clear obstacles
+    baseSpeed = -7;  // Reset speed
+    nextCactusTime = 0; // Reset cactus generation timer
+    dino.y = 150;  // Reset dino's position
+    dino.grounded = true;
+}
+
 // Start the game
-gameLoop();
+requestAnimationFrame(gameLoop);
