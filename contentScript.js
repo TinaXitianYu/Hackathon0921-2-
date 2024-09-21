@@ -3,39 +3,38 @@ const savedSubsections = {};
 
 // Function to check if the current page is the main RWS1 page (list of main courses)
 function isMainCoursePage() {
-    return document.querySelector('div[id^="ctl00_Body_tabRWS_tpnRWS1"]') !== null;
-}
-
-// Function to check if the current page is a subsection page
-// Function to check if the current page is a subsection page by looking for "Select Lab"
-function isSubsectionPage() {
-    const selectLabText = document.querySelector('span#ctl00_Body_lblColSelect');
-    return selectLabText !== null && selectLabText.textContent.includes('Select Lab');
+    return document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS1"]') !== null;
 }
 
 // Function to get all courses on the main RWS1 page
 function getCoursesAndSubsections() {
     const courses = [];
-    const addCourseLinks = document.querySelectorAll('a.lnkAddCourse');
+    
+    // Ensure we only get courses from the RWS1 tab
+    const rws1Tab = document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS1"]');
+    
+    if (rws1Tab) {
+        const addCourseLinks = rws1Tab.querySelectorAll('a.lnkAddCourse');  // Restrict the query to within RWS1
 
-    addCourseLinks.forEach((link) => {
-        const dept = link.getAttribute('dept');  // Get department (e.g., E37)
-        const schcode = link.getAttribute('schcode');  // Get school code (e.g., E)
-        const crs = link.getAttribute('crs');  // Get course number (e.g., 202)
-        const section = link.getAttribute('sec');  // Get section number (e.g., 01 or A)
-        const sectype = link.getAttribute('sectype');  // Get type (S for main course, D for subsection)
+        addCourseLinks.forEach((link) => {
+            const dept = link.getAttribute('dept');  // Get department (e.g., E37)
+            const schcode = link.getAttribute('schcode');  // Get school code (e.g., E)
+            const crs = link.getAttribute('crs');  // Get course number (e.g., 202)
+            const section = link.getAttribute('sec');  // Get section number (e.g., 01 or A)
+            const sectype = link.getAttribute('sectype');  // Get type (S for main course, D for subsection)
 
-        const courseId = `${dept} ${schcode} ${crs} ${section}`;  // Create unique identifier for the course
+            const courseId = `${dept} ${schcode} ${crs} ${section}`;  // Create unique identifier for the course
 
-        if (sectype === 'S') {
-            // If it's a main course, save it for registration
-            courses.push({ courseId, dept, schcode, crs, section, link });
-        } else if (sectype === 'D') {
-            // If it's a subsection, save it for the corresponding main course
-            const mainCourseId = `${dept} ${schcode} ${crs}`;  // Use dept, schcode, and crs to identify the main course
-            savedSubsections[mainCourseId] = section;  // Save the subsection (e.g., A, B, etc.)
-        }
-    });
+            if (sectype === 'S') {
+                // If it's a main course, save it for registration
+                courses.push({ courseId, dept, schcode, crs, section, link });
+            } else if (sectype === 'D') {
+                // If it's a subsection, save it for the corresponding main course
+                const mainCourseId = `${dept} ${schcode} ${crs}`;  // Use dept, schcode, and crs to identify the main course
+                savedSubsections[mainCourseId] = section;  // Save the subsection (e.g., A, B, etc.)
+            }
+        });
+    }
 
     return courses;
 }
@@ -100,4 +99,3 @@ function automateRegistration() {
 
 // Run the script
 automateRegistration();
-
