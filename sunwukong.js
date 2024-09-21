@@ -1,6 +1,36 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// Define the pixel size and the grid for the Sun Wukong character
+const pixelSize = 20;  // Size of each pixel block
+
+// Define the pixel grid for the Sun Wukong sprite
+const wukongPixels = [
+    // Each element corresponds to a color code or null (for transparent space)
+    ['#000000', '#000000', '#000000', null, null, '#000000', '#000000', '#000000'],
+    ['#000000', '#FFDDC1', '#F9A602', '#D35400', '#D35400', '#F9A602', '#FFDDC1', '#000000'],
+    ['#000000', '#D35400', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#D35400', '#000000'],
+    ['#D35400', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#D35400'],
+    ['#000000', '#F9A602', '#D35400', '#D35400', '#F9A602', '#D35400', '#F9A602', '#000000'],
+    ['#000000', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#F9A602', '#000000'],
+    [null, '#C0392B', '#C0392B', null, null, '#C0392B', '#C0392B', null],
+    [null, '#C0392B', '#C0392B', null, null, '#C0392B', '#C0392B', null],
+];
+
+// Function to draw the sprite on the canvas
+function drawWukong(x, y) {
+    for (let row = 0; row < wukongPixels.length; row++) {
+        for (let col = 0; col < wukongPixels[row].length; col++) {
+            const color = wukongPixels[row][col];
+            if (color) {
+                // Set the color and draw each pixel block
+                ctx.fillStyle = color;
+                ctx.fillRect(x + col * pixelSize, y + row * pixelSize, pixelSize, pixelSize);
+            }
+        }
+    }
+}
+
 // Dino character
 const dino = {
     x: 50,
@@ -12,8 +42,7 @@ const dino = {
     jump: -10,
     grounded: true,
     draw() {
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        drawWukong(this.x, this.y);  // Draw Sun Wukong as the Dino character
     },
     update() {
         if (!this.grounded) {
@@ -28,24 +57,45 @@ const dino = {
     }
 };
 
-// Cactus obstacle
-const cactus = {
-    x: 600,
-    y: 160,
-    width: 20,
-    height: 40,
-    dx: -5,
-    draw() {
-        ctx.fillStyle = "green";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-    },
-    update() {
-        this.x += this.dx;
-        if (this.x < 0) {
-            this.x = canvas.width;
+// Array to hold cactus obstacles
+let obstacles = [];
+let speedIncreaseRate = 0.01;  // Gradually increase the speed
+let baseSpeed = -10;  // Initial speed
+
+// Track when to generate the next cactus
+let nextCactusTime = 0;
+
+// Function to create random cacti
+function createCactus() {
+    const cactus = {
+        x: canvas.width,
+        y: 160,
+        width: 20 + Math.random() * 10, // Random width for more variation
+        height: 40 + Math.random() * 10, // Random height for more variation
+        dx: baseSpeed, // Initial speed
+        draw() {
+            ctx.fillStyle = "green";
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        },
+        update() {
+            this.x += this.dx;
+            if (this.x + this.width < 0) {
+                // Remove the cactus when it goes off-screen
+                obstacles = obstacles.filter(ob => ob !== this);
+            }
         }
+    };
+    obstacles.push(cactus);
+}
+
+// Function to generate obstacles based on time
+function generateObstacles(timestamp) {
+    if (timestamp >= nextCactusTime) {
+        createCactus();
+        // Set next cactus time between 0.5 and 2 seconds
+        nextCactusTime = timestamp + (500 + Math.random() * 1500);
     }
-};
+}
 
 // Jumping logic
 document.addEventListener('keydown', (e) => {
@@ -56,7 +106,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 // Check for collision
-function isCollision() {
+function isCollision(cactus) {
     return (
         dino.x < cactus.x + cactus.width &&
         dino.x + dino.width > cactus.x &&
@@ -66,22 +116,41 @@ function isCollision() {
 }
 
 // Game loop
-function gameLoop() {
+function gameLoop(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     dino.draw();
     dino.update();
 
-    cactus.draw();
-    cactus.update();
+    // Create random obstacles based on time
+    generateObstacles(timestamp);
 
-    if (isCollision()) {
-        alert("Game Over! Press OK to restart.");
-        cactus.x = 600; // Reset the cactus position
-    }
+    // Update and draw obstacles
+    obstacles.forEach(cactus => {
+        cactus.draw();
+        cactus.update();
+        if (isCollision(cactus)) {
+            alert("Game Over! Press OK to restart.");
+            resetGame();
+        }
+    });
 
+    // Gradually increase speed over time
+    baseSpeed -= speedIncreaseRate;
+    obstacles.forEach(cactus => cactus.dx = baseSpeed);
+
+    // Request next frame
     requestAnimationFrame(gameLoop);
 }
 
+// Reset game state
+function resetGame() {
+    obstacles = []; // Clear obstacles
+    baseSpeed = -7;  // Reset speed
+    nextCactusTime = 0; // Reset cactus generation timer
+    dino.y = 150;  // Reset dino's position
+    dino.grounded = true;
+}
+
 // Start the game
-gameLoop();
+requestAnimationFrame(gameLoop);

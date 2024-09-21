@@ -43,6 +43,12 @@
       .hidden {
         display: none;
       }
+
+      #gameCanvas {
+        display: block;
+        margin: 20px auto;
+        background-color: #f4f4f4;
+      }
     </style>
   </head>
   <body>
@@ -66,10 +72,10 @@
       <p id="countdown" style="font-size: 2em; margin: 20px 0;">00:00:00</p>
       <p>Note: It is recommended to start at least 2 minutes before your registration time!</p>
       <button id="startButton">Start</button>
-    </div>
 
-    <!-- Status/alert message section -->
-    <div id="status" style="margin-top: 20px;"></div>
+      <!-- Game canvas -->
+      <canvas id="gameCanvas" width="600" height="200"></canvas>
+    </div>
 
     <script src="popup.js"></script>
   </body>
