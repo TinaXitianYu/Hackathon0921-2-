@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   const confirmTimeButton = document.getElementById('confirmTimeButton');
+  const startImmediatelyButton = document.getElementById('startImmediatelyButton');
   const startButton = document.getElementById('startButton');
   const countdownElement = document.getElementById('countdown');
   const countdownSection = document.getElementById('countdownSection');
@@ -7,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   let countdownInterval;
 
+  // Handle "Confirm Time" button
   confirmTimeButton.addEventListener('click', function() {
     // Get the selected date and time from input
     const selectedTime = new Date(registrationTimeInput.value);
@@ -23,9 +25,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hide the registration time selection
     confirmTimeButton.style.display = 'none';
     registrationTimeInput.style.display = 'none';
+    startImmediatelyButton.style.display = 'none'; // Hide "Start Immediately" button
 
     // Start the countdown
     startCountdown(selectedTime);
+  });
+
+  // Handle "Start Immediately" button
+  startImmediatelyButton.addEventListener('click', function() {
+    // Set the registration time to 2 minutes from the current time
+    const immediateTime = new Date(new Date().getTime() + 2 * 60 * 1000);
+
+    // Show the countdown section
+    countdownSection.style.display = 'block';
+
+    // Hide the registration time selection
+    confirmTimeButton.style.display = 'none';
+    registrationTimeInput.style.display = 'none';
+    startImmediatelyButton.style.display = 'none'; // Hide "Start Immediately" button
+
+    // Start the countdown
+    startCountdown(immediateTime);
   });
 
   startButton.addEventListener('click', function() {
@@ -58,3 +78,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000); // 1000 ms = 1 second
   }
 });
+
