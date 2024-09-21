@@ -7,14 +7,15 @@
     "default_popup": "CourseGrabber.html",
     "default_icon": "CourseGrab.png"
   },
-  "permissions": ["storage"]
-  "content_scripts": 
-  {
-    "matches": [
-      "https://courses.wustl.edu/*", 
-      "https://acadinfo.wustl.edu/*"  
-    ],
-    "js": ["contentScript.js"], 
-    "run_at": "document_end"
-  }
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://courses.wustl.edu/*",
+        "https://acadinfo.wustl.edu/*"
+      ],
+      "js": ["contentScript.js"],
+      "run_at": "document_end"
+    }
+  ]
 }
