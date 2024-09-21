@@ -8,7 +8,7 @@
     "default_icon": "CourseGrab.png"
   },
   "permissions": ["storage"]
-  "content_scripts": [
+  "content_scripts": 
   {
     "matches": [
       "https://courses.wustl.edu/*", 
@@ -16,5 +16,4 @@
     ],
     "run_at": "document_end"
   }
-]
 }
