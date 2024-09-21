@@ -1,16 +1,31 @@
 document.addEventListener('DOMContentLoaded', function() {
+  const startNowOrPlanSection = document.getElementById('startNowOrPlanSection');
+  const registrationSection = document.getElementById('registrationSection');
+  const countdownSection = document.getElementById('countdownSection');
+
+  const startNowButton = document.getElementById('startNowButton');
+  const planButton = document.getElementById('planButton');
   const confirmTimeButton = document.getElementById('confirmTimeButton');
-  const startImmediatelyButton = document.getElementById('startImmediatelyButton');
   const startButton = document.getElementById('startButton');
   const countdownElement = document.getElementById('countdown');
-  const countdownSection = document.getElementById('countdownSection');
   const registrationTimeInput = document.getElementById('registrationTime');
 
   let countdownInterval;
 
-  // Handle "Confirm Time" button
+  // Handle 'YES, start now' button - skip all and start background process immediately
+  startNowButton.addEventListener('click', function() {
+    triggerBackgroundProcess(); // Skip everything and start the background task
+  });
+
+  // Handle 'NO, plan' button - show the registration time selection page
+  planButton.addEventListener('click', function() {
+    // Hide the startNowOrPlan section and show the registrationSection
+    startNowOrPlanSection.classList.add('hidden');
+    registrationSection.classList.remove('hidden');
+  });
+
+  // Handle 'Confirm Time' button
   confirmTimeButton.addEventListener('click', function() {
-    // Get the selected date and time from input
     const selectedTime = new Date(registrationTimeInput.value);
 
     // Check if the input is valid
@@ -20,25 +35,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Show the countdown section
-    countdownSection.style.display = 'block';
+    countdownSection.classList.remove('hidden');
 
     // Hide the registration time selection
-    confirmTimeButton.style.display = 'none';
-    registrationTimeInput.style.display = 'none';
-    startImmediatelyButton.style.display = 'none'; // Hide "Start Immediately" button
+    registrationSection.classList.add('hidden');
 
     // Start the countdown
     startCountdown(selectedTime);
   });
 
-  // Handle "Start Immediately" button
-  startImmediatelyButton.addEventListener('click', function() {
-    // Skip the countdown entirely and trigger the background action
-    triggerBackgroundProcess();
-  });
-
   startButton.addEventListener('click', function() {
-    triggerBackgroundProcess();
+    triggerBackgroundProcess(); // Start background process after countdown
   });
 
   function startCountdown(targetTime) {
@@ -54,20 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
       }
 
-      // Convert timeDifference from milliseconds to minutes and seconds
       const minutes = Math.floor((timeDifference / 1000) / 60);
       const seconds = Math.floor((timeDifference / 1000) % 60);
-
-      // Display the countdown in MM:SS format
       countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }, 1000); // 1000 ms = 1 second
+    }, 1000);
   }
 
-  // Function to trigger the background process
   function triggerBackgroundProcess() {
     alert("Started the background successfully");
-
-    // Optionally: Perform the actual background task here, such as sending notifications or performing some action in the background.
-    // For now, we just show a message.
+    // Additional background processes can be added here
   }
 });
