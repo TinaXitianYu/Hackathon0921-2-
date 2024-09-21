@@ -33,9 +33,9 @@ function stopRegistrationCheck() {
 
 // Function to determine if the registration page has loaded
 function checkIfRegistrationPageLoaded() {
-    // Yes if we can see RWS1 tab
-    const rws1Tab = document.querySelector('#ctl00_Body_tabRWS_tpnRWS1');
-    return rws1Tab && rws1Tab.style.display === 'block';
+    // Check if the "Registration Worksheet" text is present on the page
+    const registrationWorksheet = document.querySelector('td.labelColumn');
+    return registrationWorksheet && registrationWorksheet.textContent.includes('Registration Worksheet');
 }
 
 // Listen for messages from the popup.js
