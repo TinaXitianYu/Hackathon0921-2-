@@ -44,19 +44,25 @@ function getSavedSubsection(courseId) {
     return savedSubsections[courseId] || null;
 }
 
-// Function to add the main course
+// Function to add the main course with error handling
 function addMainCourse(course) {
-    console.log(`Adding main course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
-    course.link.click();  // Click the "Add Course" link
+    try {
+        console.log(`Attempting to add main course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
+        course.link.click();  // Click the "Add Course" link
+    } catch (error) {
+        console.error(`Failed to add course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
+    }
 }
 
-// Function to add a subsection
+// Function to add a subsection with error handling
 function addSubsection(dept, schcode, crs) {
     const mainCourseId = `${dept} ${schcode} ${crs}`;
     const subsection = getSavedSubsection(mainCourseId);
+    
     if (subsection) {
         // Loop through all the "Add Course" links on the subsection page to find the saved subsection
         const addSubsectionLinks = document.querySelectorAll('a.lnkAddCourse');
+        
         addSubsectionLinks.forEach((link) => {
             const linkSection = link.getAttribute('sec');
             const linkDept = link.getAttribute('dept');
@@ -65,8 +71,12 @@ function addSubsection(dept, schcode, crs) {
 
             // Ensure we match the correct course by department, school code, and course number
             if (linkDept === dept && linkSchcode === schcode && linkCrs === crs && linkSection === subsection) {
-                console.log(`Adding subsection: ${dept} ${schcode} ${crs} section ${subsection}`);
-                link.click();  // Click the "Add Course" link for the subsection
+                try {
+                    console.log(`Attempting to add subsection: ${dept} ${schcode} ${crs} section ${subsection}`);
+                    link.click();  // Click the "Add Course" link for the subsection
+                } catch (error) {
+                    console.error(`Failed to add subsection: ${dept} ${schcode} ${crs} section ${subsection}`);
+                }
             }
         });
     } else {
@@ -74,15 +84,15 @@ function addSubsection(dept, schcode, crs) {
     }
 }
 
-// Main function to automate the registration process
+// Main function to automate the registration process with course iteration
 function automateRegistration() {
     if (isMainCoursePage()) {
         // We're on the main course page, get all courses and subsections
         const mainCourses = getCoursesAndSubsections();
         
-        // Loop through the main courses and add them
+        // Loop through the main courses and add them, ensuring that it continues to the next course even if one fails
         mainCourses.forEach((course) => {
-            addMainCourse(course);
+            addMainCourse(course);  // Try to add the course, even if one fails, continue to the next
         });
 
     } else if (isSubsectionPage()) {
@@ -92,7 +102,7 @@ function automateRegistration() {
             const dept = firstSubsectionLink.getAttribute('dept');
             const schcode = firstSubsectionLink.getAttribute('schcode');
             const crs = firstSubsectionLink.getAttribute('crs');
-            addSubsection(dept, schcode, crs);
+            addSubsection(dept, schcode, crs);  // Try to add the subsection, even if one fails, continue
         }
     }
 }
