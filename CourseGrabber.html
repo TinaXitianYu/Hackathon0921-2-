@@ -1,36 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration Time</title>
     <style>
       body {
         font-family: Arial, sans-serif;
         padding: 20px;
       }
-      input, button {
+      input, button, select {
         margin-top: 10px;
         width: 100%;
         padding: 10px;
       }
       button {
-        background-color: #007BFF; /* Button color */
-        color: white; /* Text color */
-        border: none; /* Remove default border */
-        border-radius: 4px; /* Rounded corners */
-        cursor: pointer; /* Pointer cursor on hover */
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
       }
       button:hover {
-        background-color: #0056b3; /* Darker blue on hover */
+        background-color: #0056b3;
+      }
+      #countdownSection {
+        display: none; /* Hide countdown section initially */
       }
     </style>
   </head>
   <body>
-    <h1>Start this program 2 minutes before your registration time</h1>
-    <button id="startButton">START</button>
+    <h1>Select your registration time</h1>
+    <select id="registrationTime">
+      <option value="60">1 minute</option>
+      <option value="120">2 minutes</option>
+      <option value="300">5 minutes</option>
+    </select>
+    <button id="confirmTimeButton">Confirm Time</button>
 
-    <div id="status" style="margin-top: 20px;"></div> <!-- Area to display status -->
+    <!-- Countdown section (hidden initially) -->
+    <div id="countdownSection">
+      <h1>Countdown:</h1>
+      <p id="countdown">00:00</p>
+      <p>Note: We recommend you to start grabbing at least 2 minutes before your registration!</p>
+      <button id="startButton">Start</button>
+    </div>
 
-    <script src="popup.js"></script>
+    <!-- Status/alert message section -->
+    <div id="status" style="margin-top: 20px;"></div>
 
     <script src="popup.js"></script>
   </body>
