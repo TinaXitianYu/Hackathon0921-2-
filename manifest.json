@@ -11,10 +11,10 @@
   "content_scripts": [
   {
     "matches": [
-      "https://courses.wustl.edu/*",         // Matches WashU's course listing page
-      "https://acadinfo.wustl.edu/*"         // Matches another WashU academic info page
+      "https://courses.wustl.edu/*", 
+      "https://acadinfo.wustl.edu/*"  
     ],
-    "run_at": "document_end"      // Injects the script after the page has fully loaded
+    "run_at": "document_end"
   }
 ]
 }
