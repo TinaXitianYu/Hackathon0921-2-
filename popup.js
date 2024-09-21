@@ -33,28 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Handle "Start Immediately" button
   startImmediatelyButton.addEventListener('click', function() {
-    // Set the registration time to 2 minutes from the current time
-    const immediateTime = new Date(new Date().getTime() + 2 * 60 * 1000);
-
-    // Show the countdown section
-    countdownSection.style.display = 'block';
-
-    // Hide the registration time selection
-    confirmTimeButton.style.display = 'none';
-    registrationTimeInput.style.display = 'none';
-    startImmediatelyButton.style.display = 'none'; // Hide "Start Immediately" button
-
-    // Start the countdown
-    startCountdown(immediateTime);
+    // Skip the countdown entirely and trigger the background action
+    triggerBackgroundProcess();
   });
 
   startButton.addEventListener('click', function() {
-    alert("Started the background successfully");
-
-    // Optional: Add a reminder 2 minutes before registration time
-    setTimeout(() => {
-      alert("Reminder: Your registration time is about to start!");
-    }, 120000); // 120,000 ms = 2 minutes
+    triggerBackgroundProcess();
   });
 
   function startCountdown(targetTime) {
@@ -66,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearInterval(countdownInterval);
         countdownElement.textContent = '00:00';
         alert("Your registration time has arrived! Please proceed.");
+        triggerBackgroundProcess();
         return;
       }
 
@@ -77,5 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
       countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     }, 1000); // 1000 ms = 1 second
   }
-});
 
+  // Function to trigger the background process
+  function triggerBackgroundProcess() {
+    alert("Started the background successfully");
+
+    // Optionally: Perform the actual background task here, such as sending notifications or performing some action in the background.
+    // For now, we just show a message.
+  }
+});
