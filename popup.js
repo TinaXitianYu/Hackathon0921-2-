@@ -71,5 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
   function triggerBackgroundProcess() {
     alert("Grabbing Started");
     // Additional background processes can be added here
+    chrome.runtime.sendMessage({action: "startBackgroundProcess"}, function(response) {
+      console.log(response.status); // Log the response from the background script
+    });
   }
 });
