@@ -7,11 +7,7 @@
     "default_popup": "CourseGrabber.html",
     "default_icon": "CourseGrabber.png"
   },
-  "permissions": [
-    "tabs",
-    "scripting",
-    "activeTab",
-  ],
+  "permissions": ["tabs", "scripting", "activeTab"],
   "background": {
     "service_worker": "background.js"
   },
