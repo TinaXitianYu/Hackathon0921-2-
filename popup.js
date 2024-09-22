@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmTimeButton = document.getElementById('confirmTimeButton');
   const startButton = document.getElementById('startButton');
   const stopButton = document.getElementById('stopButton');
+  const stopProgramButton = document.getElementById('stopProgramButton');
   const countdownElement = document.getElementById('countdown');
   const registrationTimeInput = document.getElementById('registrationTime');
 
@@ -150,8 +151,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
   startButton.addEventListener('click', function() {
       triggerBackgroundProcess();
+      stopGame();
+      stopProgramButton.classList.remove('hidden');
   });
 
+  stopProgramButton.addEventListener('click', function() {
+      stopGame();  // Stop the game and countdown
+      chrome.runtime.sendMessage({ action: 'stop' }, function(response) {
+          console.log("Program stopped:", response.status);
+      });
+      countdownSection.classList.add('hidden');  // Hide the countdown section after stopping
+  });
+  
   function startCountdown(targetTime) {
       countdownInterval = setInterval(function() {
           const currentTime = new Date();
