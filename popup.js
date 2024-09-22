@@ -116,6 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle 'YES, start now' button - skip all and start background process immediately
   startNowButton.addEventListener('click', function() {
       triggerBackgroundProcess(); // Skip everything and start the background task
+      stopButton.classList.remove('hidden');
   });
 
   stopButton.addEventListener('click', function() {
@@ -148,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   startButton.addEventListener('click', function() {
       triggerBackgroundProcess();
+      stopButton.classList.remove('hidden');
   });
 
   function startCountdown(targetTime) {
