@@ -9,22 +9,107 @@ document.addEventListener('DOMContentLoaded', function() {
   const countdownElement = document.getElementById('countdown');
   const registrationTimeInput = document.getElementById('registrationTime');
 
-  // Integrate sunwukong.js functions
-  const startGameButton = document.getElementById('startGameButton');
-  const playAgainButton = document.getElementById('playAgainButton');
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
 
-  // Event listener for "Start Game" button
-  startGameButton.addEventListener('click', function() {
-    startGameButton.style.display = 'none'; // Hide the start button
-    startGame(); // Start the game loop from sunwukong.js
+  let countdownInterval;
+  let gameInterval;
+  let gameRunning = true;
+
+  // Dino character
+  const dino = {
+      x: 50,
+      y: 150,
+      width: 20,
+      height: 20,
+      dy: 0,
+      gravity: 0.6,
+      jump: -10,
+      grounded: true,
+      draw() {
+          ctx.fillStyle = "black";
+          ctx.fillRect(this.x, this.y, this.width, this.height);
+      },
+      update() {
+          if (!this.grounded) {
+              this.dy += this.gravity;
+              this.y += this.dy;
+              if (this.y >= 150) { // Ground level
+                  this.y = 150;
+                  this.grounded = true;
+                  this.dy = 0;
+              }
+          }
+      }
+  };
+
+  // Cactus obstacle
+  const cactus = {
+      x: 600,
+      y: 160,
+      width: 20,
+      height: 40,
+      dx: -5,
+      draw() {
+          ctx.fillStyle = "green";
+          ctx.fillRect(this.x, this.y, this.width, this.height);
+      },
+      update() {
+          this.x += this.dx;
+          if (this.x < 0) {
+              this.x = canvas.width;
+          }
+      }
+  };
+
+  // Jumping logic
+  document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && dino.grounded) {
+          dino.grounded = false;
+          dino.dy = dino.jump;
+      }
   });
 
-  // Event listener for "Play Again" button
-  playAgainButton.addEventListener('click', function() {
-    playAgainButton.style.display = 'none'; // Hide the button
-    resetGame(); // Reset the game from sunwukong.js
-    startGame(); // Restart the game loop
-  });
+  // Check for collision
+  function isCollision() {
+      return (
+          dino.x < cactus.x + cactus.width &&
+          dino.x + dino.width > cactus.x &&
+          dino.y < cactus.y + cactus.height &&
+          dino.y + dino.height > cactus.y
+      );
+  }
+
+  // Game loop
+  function gameLoop() {
+      if (!gameRunning) return; // Stop the game if not running
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      dino.draw();
+      dino.update();
+
+      cactus.draw();
+      cactus.update();
+
+      if (isCollision()) {
+          alert("Game Over! Press OK to restart.");
+          cactus.x = 600; // Reset the cactus position
+      }
+
+      requestAnimationFrame(gameLoop);
+  }
+
+  // Start the game
+  function startGame() {
+      gameRunning = true;
+      gameLoop();
+  }
+
+  // Stop the game
+  function stopGame() {
+      gameRunning = false;
+  }
 
   // Handle 'YES, start now' button - skip all and start background process immediately
   startNowButton.addEventListener('click', function() {
@@ -73,11 +158,11 @@ document.addEventListener('DOMContentLoaded', function() {
           const hours = Math.floor((timeDifference / 1000) / 3600);
           const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
           const seconds = Math.floor((timeDifference / 1000) % 60);
-          countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          countdownElement.textContent = ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')};
 
           // Stop the game at 2 minutes and show a popup
           if (minutes === 2 && seconds === 0) {
-              stopGame(); // Function from sunwukong.js to stop the game
+              stopGame();
               alert("Two minutes left!!");
           }
       }, 1000);
