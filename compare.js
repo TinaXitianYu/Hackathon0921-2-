@@ -1,5 +1,6 @@
 // Object to store subsections for each main course
 const savedSubsections = {};
+let attemptedCourses = new Set(); // Track attempted courses
 
 // Function to check if the current page is the main RWS1 page (list of main courses)
 function isMainCoursePage() {
@@ -9,10 +10,10 @@ function isMainCoursePage() {
 // Function to get all courses on the main RWS1 page
 function getCoursesAndSubsections() {
     const courses = [];
-    
+
     // Ensure we only get courses from the RWS1 tab
     const rws1Tab = document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS1"]');
-    
+
     if (rws1Tab) {
         const addCourseLinks = rws1Tab.querySelectorAll('a.lnkAddCourse');  // Restrict the query to within RWS1
 
@@ -46,11 +47,17 @@ function getSavedSubsection(courseId) {
 
 // Function to add the main course with error handling
 function addMainCourse(course) {
-    try {
-        console.log(`Attempting to add main course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
-        course.link.click();  // Click the "Add Course" link
-    } catch (error) {
-        console.error(`Failed to add course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
+    if (!attemptedCourses.has(course.courseId)) {  // Check if course has already been attempted
+        try {
+            console.log(`Attempting to add main course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
+            course.link.click();  // Click the "Add Course" link
+            attemptedCourses.add(course.courseId);  // Mark this course as attempted
+        } catch (error) {
+            console.error(`Failed to add course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
+            attemptedCourses.add(course.courseId);  // Even if it fails, mark as attempted
+        }
+    } else {
+        console.log(`Course ${course.courseId} has already been attempted.`);
     }
 }
 
@@ -58,11 +65,11 @@ function addMainCourse(course) {
 function addSubsection(dept, schcode, crs) {
     const mainCourseId = `${dept} ${schcode} ${crs}`;
     const subsection = getSavedSubsection(mainCourseId);
-    
+
     if (subsection) {
         // Loop through all the "Add Course" links on the subsection page to find the saved subsection
         const addSubsectionLinks = document.querySelectorAll('a.lnkAddCourse');
-        
+
         addSubsectionLinks.forEach((link) => {
             const linkSection = link.getAttribute('sec');
             const linkDept = link.getAttribute('dept');
@@ -89,7 +96,7 @@ function automateRegistration() {
     if (isMainCoursePage()) {
         // We're on the main course page, get all courses and subsections
         const mainCourses = getCoursesAndSubsections();
-        
+
         // Loop through the main courses and add them, ensuring that it continues to the next course even if one fails
         mainCourses.forEach((course) => {
             addMainCourse(course);  // Try to add the course, even if one fails, continue to the next
