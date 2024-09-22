@@ -1,6 +1,5 @@
 // Object to store subsections for each main course
 const savedSubsections = {};
-let attemptedCourses = new Set(); // Track attempted courses
 
 // Function to check if the current page is the main RWS1 page (list of main courses)
 function isMainCoursePage() {
@@ -45,16 +44,29 @@ function getSavedSubsection(courseId) {
     return savedSubsections[courseId] || null;
 }
 
+// Function to load attempted courses from localStorage
+function loadAttemptedCourses() {
+    const storedData = localStorage.getItem('attemptedCourses');
+    return storedData ? new Set(JSON.parse(storedData)) : new Set();
+}
+
+// Function to save attempted courses to localStorage
+function saveAttemptedCourses(attemptedCourses) {
+    localStorage.setItem('attemptedCourses', JSON.stringify([...attemptedCourses]));
+}
+
 // Function to add the main course with error handling
-function addMainCourse(course) {
+function addMainCourse(course, attemptedCourses) {
     if (!attemptedCourses.has(course.courseId)) {  // Check if course has already been attempted
         try {
             console.log(`Attempting to add main course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
             course.link.click();  // Click the "Add Course" link
             attemptedCourses.add(course.courseId);  // Mark this course as attempted
+            saveAttemptedCourses(attemptedCourses);  // Save to localStorage
         } catch (error) {
             console.error(`Failed to add course: ${course.dept} ${course.schcode} ${course.crs} section ${course.section}`);
             attemptedCourses.add(course.courseId);  // Even if it fails, mark as attempted
+            saveAttemptedCourses(attemptedCourses);  // Save to localStorage
         }
     } else {
         console.log(`Course ${course.courseId} has already been attempted.`);
@@ -93,13 +105,15 @@ function addSubsection(dept, schcode, crs) {
 
 // Main function to automate the registration process with course iteration
 function automateRegistration() {
+    const attemptedCourses = loadAttemptedCourses();  // Load the attempted courses from localStorage
+
     if (isMainCoursePage()) {
         // We're on the main course page, get all courses and subsections
         const mainCourses = getCoursesAndSubsections();
 
         // Loop through the main courses and add them, ensuring that it continues to the next course even if one fails
         mainCourses.forEach((course) => {
-            addMainCourse(course);  // Try to add the course, even if one fails, continue to the next
+            addMainCourse(course, attemptedCourses);  // Try to add the course, even if one fails, continue to the next
         });
 
     } else if (isSubsectionPage()) {
