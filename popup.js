@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const hours = Math.floor((timeDifference / 1000) / 3600);
           const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
           const seconds = Math.floor((timeDifference / 1000) % 60);
-          countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          countdownElement.textContent = ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')};
 
           // Stop the game at 2 minutes and show a popup
           if (minutes === 2 && seconds === 0) {
@@ -167,8 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
           }
       }, 1000);
   }
- 
-
 
   function triggerBackgroundProcess() {
       alert("Grabbing Started");
@@ -176,26 +174,4 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log(response.status);
       });
   }
-   const stopButton = document.getElementById('stopButton');
-  startNowButton.addEventListener('click', function() {
-    triggerBackgroundProcess(); 
-    stopButton.classList.remove('hidden'); // Show the stop button
-});
-
-confirmTimeButton.addEventListener('click', function() {
-    const selectedTime = new Date(registrationTimeInput.value);
-
-    if (isNaN(selectedTime.getTime())) {
-        alert('Please select a valid date and time.');
-        return;
-    }
-
-    countdownSection.classList.remove('hidden');
-    registrationSection.classList.add('hidden');
-    stopButton.classList.remove('hidden'); // Show the stop button after confirming time
-
-    startCountdown(selectedTime);
-    startGame();
-});
-
 });
