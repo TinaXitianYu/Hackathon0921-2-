@@ -11,19 +11,12 @@
     "tabs",
     "scripting",
     "activeTab",
-    "*://acadinfo.wustl.edu/*"
+    "*://acadinfo.wustl.edu/*",
+    "https://acadinfo.wustl.edu/apps/Registration/"
   ],
   "background": {
     "service_worker": "background.js"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-       "https://courses.wustl.edu/*",
-        "https://acadinfo.wustl.edu/*"
-      ],
-      "js": ["contentScript.js"],
-      "run_at": "document_end"
-    }
-  ]
+  }
+
 }
+
