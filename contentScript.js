@@ -52,7 +52,7 @@ function attemptCourse(courses, courseIndex) {
             } else {
                 console.log(`Course ${course.courseId} added successfully.`);
             }
-        }, 2000);  // Give time for the page to update before checking for errors
+        }, 3000);  // Give time for the page to update before checking for errors
     } catch (error) {
         console.error(`Failed to add course: ${course.courseId}`);
         attemptCourse(courses, courseIndex + 1);  // Move to the next course if there's a failure
@@ -61,12 +61,10 @@ function attemptCourse(courses, courseIndex) {
 
 // Function to check for error messages or warnings
 function checkForError() {
-    const errorMessages = document.querySelectorAll('div.error, div.warning');
-    for (let errorMessage of errorMessages) {
-        if (errorMessage.textContent.includes('Error Code') || errorMessage.textContent.includes('warning')) {
-            console.error("Error or warning detected: ", errorMessage.textContent);
-            return true;  // Error or warning detected
-        }
+    const errorMessage = document.querySelector('div.error, div.warning');
+    if (errorMessage && errorMessage.textContent.includes('Error Code')) {
+        console.error("Error detected: ", errorMessage.textContent);
+        return true;  // Error detected
     }
     return false;  // No error detected
 }
