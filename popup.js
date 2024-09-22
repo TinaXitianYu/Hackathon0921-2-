@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
               countdownElement.textContent = '00:00:00';
               alert("It's registration time! Please proceed.");
               triggerBackgroundProcess();
+              stopGame();
               return;
           }
 
