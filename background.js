@@ -2,7 +2,7 @@ let interval;
 console.log("Background.js start")
 // Function to start periodic checking
 function startRegistrationCheck() {
-    console.log("Start checking for acadingo.wustl")
+    console.log("Start checking for acadinfo.wustl")
     interval = setInterval(() => {
         chrome.tabs.query({ url: "https://acadinfo.wustl.edu/*" }, function (tabs) {
             if (tabs.length > 0) {
