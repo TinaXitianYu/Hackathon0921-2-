@@ -63,7 +63,7 @@ function openRegistrationPage() {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.action === "startBackgroundProcess") {
-        startRegistrationCheck(); // Start the checking process
+        openRegistrationPage(); // Start the checking process
         sendResponse({status: "Process started"});
     // } else if (request.action === 'start') {
     //     console.log("Starting registration page check.");
