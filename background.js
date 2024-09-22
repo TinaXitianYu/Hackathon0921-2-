@@ -27,20 +27,18 @@ function startRegistrationCheck() {
                                 console.log("'Registration Worksheet' found!");
                             }
                         });
-                        return found; // Return whether it was found
+                        return found;
                     }
                 }, (results) => {
                     console.log(`Script result: ${results ? results[0].result : 'No results returned'}`);
                     if (results && results[0].result === true) {
-                        // If registration page is loaded, stop the interval and start registration
                         console.log("Registration page loaded, stopping periodic check and injecting content script.");
-                        clearInterval(interval); // Stops reloads
+                        clearInterval(interval);
                         chrome.scripting.executeScript({
                             target: { tabId: tabs[0].id },
                             files: ['contentScript.js']
                         });
                     } else {
-                        // Reload the Webstac registration page to keep checking
                         console.log("Registration page not loaded, reloading tab.");
                         chrome.tabs.reload(tabs[0].id);
                     }
@@ -49,7 +47,7 @@ function startRegistrationCheck() {
                 console.log("No tabs found with the target URL.");
             }
         });
-    }, 1000);  // Check every second (you can adjust the interval)
+    }, 1000);  // Check every second
 }
 
 // Function to stop the periodic checking
@@ -58,28 +56,12 @@ function stopRegistrationCheck() {
     clearInterval(interval);
 }
 
-// Function to determine if the registration page has loaded
-function checkIfRegistrationPageLoaded() {
-    const registrationWorksheet = document.querySelectorAll('td.labelColumn');
-    console.log(`Found ${registrationWorksheet.length} 'td.labelColumn' elements.`);
-    let found = false;
-    registrationWorksheet.forEach((element) => {
-        console.log(`Checking element text: ${element.textContent}`);
-        if (element.textContent.includes('Registration Worksheet')) {
-            console.log("'Registration Worksheet' found, stopping check.");
-            stopRegistrationCheck();
-            found = true;
-        }
-    });
-    return found; // Return whether it was found
-}
-
-// Open the registration page and start checking
+// Function to open the registration page and start checking
 function openRegistrationPage() {
     console.log("Opening the registration page.");
     chrome.tabs.update({ url: "https://acadinfo.wustl.edu/apps/Registration/" }, () => {
         console.log("Registration page opened, starting periodic check.");
-        startRegistrationCheck(); // Start checking after opening the page
+        startRegistrationCheck();
     });
 }
 
