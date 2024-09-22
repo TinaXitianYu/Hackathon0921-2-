@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
               clearInterval(countdownInterval);
               countdownElement.textContent = '00:00:00';
               triggerBackgroundProcess();
-              alert("It's registration time! Please proceed.");
+              //alert("It's registration time! Please proceed.");
               stopGame();
               stopProgramButton.classList.remove('hidden');
               return;
@@ -192,9 +192,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function triggerBackgroundProcess() {
-      alert("Grabbing Started");
       chrome.runtime.sendMessage({action: "startBackgroundProcess"}, function(response) {
           console.log(response.status);
       });
+      alert("Grabbing Started");
   }
 });
