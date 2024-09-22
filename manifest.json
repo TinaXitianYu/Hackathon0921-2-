@@ -12,7 +12,7 @@
     "scripting",
     "activeTab",
     "https://acadinfo.wustl.edu/*",
-    "https://acadinfo.wustl.edu/apps/Registration/*",
+    "https://acadinfo.wustl.edu/apps/Registration/*"
   ],
   "background": {
     "service_worker": "background.js"
