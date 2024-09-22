@@ -1,16 +1,20 @@
 let interval;
-
+console.log("Background.js start")
 // Function to start periodic checking
 function startRegistrationCheck() {
+    console.log("Start checking for acadingo.wustl")
     interval = setInterval(() => {
         chrome.tabs.query({ url: "https://acadinfo.wustl.edu/*" }, function (tabs) {
             if (tabs.length > 0) {
+                console.log("Found matching tab")
+                console.log("Looking for Registration worksheet")
                 chrome.scripting.executeScript({
                     target: { tabId: tabs[0].id },
                     func: checkIfRegistrationPageLoaded // Check if registration page can be loaded
                 }, (results) => {
                     if (results && results[0].result === true) {
                         // If registration page is loaded, stop the interval and start registration
+                        console.log("Found Registration worksheet, stop refreshing")
                         clearInterval(interval); //stops reloads
                         chrome.scripting.executeScript({
                             target: { tabId: tabs[0].id },
@@ -38,6 +42,7 @@ function checkIfRegistrationPageLoaded() {
     let found = false;
     registrationWorksheet.forEach((element) => {
         if (element.textContent.includes('Registration Worksheet')){
+            console.log("Found Registration worksheet!")
             stopRegistrationCheck();
             found = true
         }
