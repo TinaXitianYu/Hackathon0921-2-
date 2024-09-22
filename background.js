@@ -23,7 +23,7 @@ function startRegistrationCheck() {
                 });
             }
         });
-    }, 1000);  // Check every 5 seconds (you can adjust the interval)
+    }, 5000);  // Check every 5 seconds (you can adjust the interval)
 }
 
 // Function to stop the periodic checking
