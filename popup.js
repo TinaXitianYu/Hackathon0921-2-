@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
   startNowButton.addEventListener('click', function() {
       triggerBackgroundProcess(); // Skip everything and start the background task
       stopButton.classList.remove('hidden');
+      planButton.classList.add('hidden');
   });
 
   stopButton.addEventListener('click', function() {
