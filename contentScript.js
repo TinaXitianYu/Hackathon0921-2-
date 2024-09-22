@@ -1,16 +1,9 @@
 // Object to store subsections for each main course
-const savedSubsections = {};
 let currentCourseIndex = 0;  // Track the current course being attempted
 
 // Function to check if the current page is the main RWS1 page (list of main courses)
 function isMainCoursePage() {
     return document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS1"]') !== null;
-}
-
-// Function to check if the current page is a subsection page
-function isSubsectionPage() {
-    // Assuming subsection pages have a specific identifier (adjust as needed)
-    return document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS2"]') !== null;
 }
 
 // Function to get all courses from RWS1
@@ -44,6 +37,8 @@ function attemptCourse(courses, courseIndex) {
     try {
         // Click the "Add Course" link
         course.link.click();
+        console.log(`Clicked on course: ${course.courseId}`);
+        
         setTimeout(() => {
             // After attempting to add the course, check for errors or warnings
             if (checkForError()) {
@@ -52,20 +47,29 @@ function attemptCourse(courses, courseIndex) {
             } else {
                 console.log(`Course ${course.courseId} added successfully.`);
             }
-        }, 3000);  // Give time for the page to update before checking for errors
+        }, 4000);  // Give time for the page to update before checking for errors
     } catch (error) {
-        console.error(`Failed to add course: ${course.courseId}`);
+        console.error(`Failed to add course: ${course.courseId}. Error: ${error}`);
         attemptCourse(courses, courseIndex + 1);  // Move to the next course if there's a failure
     }
 }
 
 // Function to check for error messages or warnings
 function checkForError() {
+    // Logging for debugging purposes
     const errorMessage = document.querySelector('div.error, div.warning');
-    if (errorMessage && errorMessage.textContent.includes('Error Code')) {
+    if (errorMessage) {
+        console.log("Error message found: ", errorMessage.textContent);
+    } else {
+        console.log("No error message found.");
+    }
+
+    // Adjusting to make sure we detect specific errors like the one in your screenshot
+    if (errorMessage && (errorMessage.textContent.includes('Error Code') || errorMessage.textContent.includes('warning'))) {
         console.error("Error detected: ", errorMessage.textContent);
         return true;  // Error detected
     }
+
     return false;  // No error detected
 }
 
@@ -74,11 +78,11 @@ function automateRegistration() {
     if (isMainCoursePage()) {
         // We're on the main course page, get all courses and subsections
         const mainCourses = getCoursesFromRWS1();
+        console.log("Found courses: ", mainCourses);
         // Start attempting to add the courses one by one
         attemptCourse(mainCourses, currentCourseIndex);
-    } else if (isSubsectionPage()) {
-        console.log("Subsection page detected. Handling subsections.");
-        // Handle subsections if needed (not in this example)
+    } else {
+        console.error("Not on the main course page.");
     }
 }
 
