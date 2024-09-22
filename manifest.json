@@ -19,7 +19,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://acadinfo.wustl.edu/*"
+       "https://courses.wustl.edu/*",
+        "https://acadinfo.wustl.edu/*"
       ],
       "js": ["contentScript.js"],
       "run_at": "document_end"
