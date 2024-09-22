@@ -160,7 +160,6 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.runtime.sendMessage({ action: 'stop' }, function(response) {
           console.log("Program stopped:", response.status);
       });
-      countdownSection.classList.add('hidden');  // Hide the countdown section after stopping
   });
   
   function startCountdown(targetTime) {
