@@ -1,6 +1,3 @@
-// Object to store subsections for each main course
-let currentCourseIndex = 0;  // Track the current course being attempted
-
 // Function to check if the current page is the main RWS1 page (list of main courses)
 function isMainCoursePage() {
     return document.querySelector('div[id="ctl00_Body_tabRWS_tpnRWS1"]') !== null;
@@ -34,23 +31,24 @@ function attemptCourse(courses, courseIndex) {
     const course = courses[courseIndex];
     console.log(`Attempting to add course: ${course.courseId}`);
 
+    // Store the current course index in sessionStorage
+    sessionStorage.setItem('currentCourseIndex', courseIndex);
+    sessionStorage.setItem('courses', JSON.stringify(courses));
+
     try {
         // Click the "Add Course" link
         course.link.click();
         console.log(`Clicked on course: ${course.courseId}`);
-        
-        setTimeout(() => {
-            // After attempting to add the course, check for errors or warnings
-            if (checkForError()) {
-                console.log(`Error encountered when adding course: ${course.courseId}. Moving to the next course.`);
-                attemptCourse(courses, courseIndex + 1);  // Move to the next course if there's an error
-            } else {
-                console.log(`Course ${course.courseId} added successfully.`);
-            }
-        }, 4000);  // Give time for the page to update before checking for errors
+
+        // The page may reload or navigate, so the rest of the code may not execute.
+        // We'll rely on the script re-running on page load and checking for errors.
     } catch (error) {
         console.error(`Failed to add course: ${course.courseId}. Error: ${error}`);
-        attemptCourse(courses, courseIndex + 1);  // Move to the next course if there's a failure
+        // Move to the next course
+        courseIndex++;
+        sessionStorage.setItem('currentCourseIndex', courseIndex);
+        // Reload the page to continue
+        location.reload();
     }
 }
 
@@ -64,7 +62,7 @@ function checkForError() {
         console.log("No error message found.");
     }
 
-    // Adjusting to make sure we detect specific errors like the one in your screenshot
+    // Adjusting to detect specific errors or warnings
     if (errorMessage && (errorMessage.textContent.includes('Error Code') || errorMessage.textContent.includes('warning'))) {
         console.error("Error detected: ", errorMessage.textContent);
         return true;  // Error detected
@@ -75,14 +73,49 @@ function checkForError() {
 
 // Main function to automate the registration process with course iteration
 function automateRegistration() {
+    let currentCourseIndex = parseInt(sessionStorage.getItem('currentCourseIndex')) || 0;
+    let courses = JSON.parse(sessionStorage.getItem('courses'));
+
     if (isMainCoursePage()) {
-        // We're on the main course page, get all courses and subsections
-        const mainCourses = getCoursesFromRWS1();
-        console.log("Found courses: ", mainCourses);
+        // We're on the main course page
+        if (!courses) {
+            // If courses are not in sessionStorage, get them
+            courses = getCoursesFromRWS1();
+            sessionStorage.setItem('courses', JSON.stringify(courses));
+        }
+        console.log("Found courses: ", courses);
         // Start attempting to add the courses one by one
-        attemptCourse(mainCourses, currentCourseIndex);
+        attemptCourse(courses, currentCourseIndex);
     } else {
-        console.error("Not on the main course page.");
+        // Not on the main course page
+        // Check for errors
+        if (checkForError()) {
+            // Error encountered, move to next course
+            currentCourseIndex++;
+            sessionStorage.setItem('currentCourseIndex', currentCourseIndex);
+            // Navigate back to the main course page
+            navigateBackToCourseList();
+        } else {
+            // Course added successfully
+            console.log("Course added successfully.");
+            // Proceed to next course if desired
+            currentCourseIndex++;
+            sessionStorage.setItem('currentCourseIndex', currentCourseIndex);
+            // Navigate back to the main course page
+            navigateBackToCourseList();
+        }
+    }
+}
+
+// Function to navigate back to the main course list
+function navigateBackToCourseList() {
+    // Try clicking on a specific link or button that takes you back
+    const backButton = document.querySelector('a#ctl00_Body_lnkReturnToRWS'); // Adjust the selector as needed
+    if (backButton) {
+        backButton.click();
+    } else {
+        // If there's no such link, you might use history.back()
+        window.history.back();
     }
 }
 
