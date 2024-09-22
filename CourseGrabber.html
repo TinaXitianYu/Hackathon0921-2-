@@ -57,16 +57,16 @@
         background-color: darkred;
       }
 
-      .stop2Button {
+      .stopProgramButton {
         background-color: red;
         color: white;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        margin-top: 50px;
+        margin-top: 40px;
         border-radius: 12px;
       }
-      .stop2Button:hover {
+      .stopProgramButton:hover {
         background-color: darkred;
       }
       
@@ -99,6 +99,8 @@
       <p id="countdown" style="font-size: 2em; margin: 20px 0;">00:00:00</p>
       <p>Note: It is recommended to start at least 2 minutes before your registration time!</p>
       <button id="startButton">Start</button>
+      <button id="stopProgramButton" class="hidden">Stop Program</button>
+      
 
       <!-- Game canvas -->
       <canvas id="gameCanvas" width="600" height="200"></canvas>
