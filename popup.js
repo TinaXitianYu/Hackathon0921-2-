@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
   const startNowOrPlanSection = document.getElementById('startNowOrPlanSection');
   const registrationSection = document.getElementById('registrationSection');
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const hours = Math.floor((timeDifference / 1000) / 3600);
           const minutes = Math.floor((timeDifference / 1000 / 60) % 60);
           const seconds = Math.floor((timeDifference / 1000) % 60);
-          countdownElement.textContent = ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')};
+          countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
           // Stop the game at 2 minutes and show a popup
           if (minutes === 2 && seconds === 0) {
