@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const confirmTimeButton = document.getElementById('confirmTimeButton');
   const startButton = document.getElementById('startButton');
   const stopButton = document.getElementById('stopButton');
-  const stop2Button = document.getElementById('stop2Button');
+  //const stop2Button = document.getElementById('stop2Button');
   const countdownElement = document.getElementById('countdown');
   const registrationTimeInput = document.getElementById('registrationTime');
 
@@ -126,11 +126,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-  stop2Button.addEventListener('click', function() {
+/*  stop2Button.addEventListener('click', function() {
         chrome.runtime.sendMessage({ action: 'stop' }, function(response) {
             console.log(response.status);
         });
-    });
+    }); */
   
   // Handle 'NO, plan' button - show the registration time selection page
   planButton.addEventListener('click', function() {
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   startButton.addEventListener('click', function() {
       triggerBackgroundProcess();
-      stop2Button.classList.remove('hidden');
+      //stop2Button.classList.remove('hidden');
   });
 
   function startCountdown(targetTime) {
@@ -167,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
           if (timeDifference <= 0) {
               clearInterval(countdownInterval);
               countdownElement.textContent = '00:00:00';
-              alert("It's registration time! Please proceed.");
               triggerBackgroundProcess();
+              alert("It's registration time! Please proceed.");
               stopGame();
               return;
           }
