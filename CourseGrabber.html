@@ -73,6 +73,23 @@
       <p>Note: It is recommended to start at least 2 minutes before your registration time!</p>
       <button id="startButton">Start</button>
 
+      <!-- Stop button added -->
+<button id="stopButton" class="immediateButton hidden">Stop Grabbing</button>
+
+      <button id="startNowButton" class="immediateButton">YES, start now</button>
+<button id="planButton">NO, plan</button>
+<button id="stopButton" class="immediateButton hidden">Stop Grabbing</button> <!-- Stop button added here -->
+
+      <div id="countdownSection" class="hidden">
+  <h1>Countdown:</h1>
+  <p id="countdown" style="font-size: 2em; margin: 20px 0;">00:00:00</p>
+  <p>Note: It is recommended to start at least 2 minutes before your registration time!</p>
+  <button id="startButton">Start</button>
+  <button id="stopButton" class="immediateButton">Stop Grabbing</button> <!-- Stop button added here -->
+  <canvas id="gameCanvas" width="600" height="200"></canvas>
+</div>
+
+
       <!-- Game canvas -->
       <canvas id="gameCanvas" width="600" height="200"></canvas>
     </div>
