@@ -44,12 +44,22 @@
       .hidden {
         display: none;
       }
-
+      .stopButton {
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+      .stopButton:hover {
+        background-color: darkred;
+      }
       #gameCanvas {
         display: block;
         margin: 20px auto;
         background-color: #f4f4f4;
-      }
+       }
     </style>
   </head>
   <body>
@@ -58,6 +68,7 @@
       <h1>Is it almost registration time, or has it already started?</h1>
       <button id="startNowButton" class="immediateButton">YES, start now</button>
       <button id="planButton">NO, plan</button>
+      <button id="stopButton" class="stopButton">Stop</button>
     </div>
 
     <!-- Page for selecting registration time -->
