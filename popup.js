@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   stopProgramButton.addEventListener('click', function() {
-      stopGame();  // Stop the game and countdown
+      stopGame();  // Stop the game
       chrome.runtime.sendMessage({ action: 'stop' }, function(response) {
           console.log("Program stopped:", response.status);
       });
