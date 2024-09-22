@@ -174,6 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
               triggerBackgroundProcess();
               alert("It's registration time! Please proceed.");
               stopGame();
+              stopButton.classList.remove('hidden');
               return;
           }
 
