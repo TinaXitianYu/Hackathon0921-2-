@@ -11,7 +11,7 @@
     "tabs",
     "scripting",
     "activeTab",
-    "https://acadinfo.wustl.edu/*"
+    "*://acadinfo.wustl.edu/*"
   ],
   "background": {
     "service_worker": "background.js"
@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://acadinfo.wustl.edu/*"
+        "*://acadinfo.wustl.edu/*"
       ],
       "js": ["contentScript.js"],
       "run_at": "document_end"
