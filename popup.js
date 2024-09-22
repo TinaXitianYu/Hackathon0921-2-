@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const planButton = document.getElementById('planButton');
   const confirmTimeButton = document.getElementById('confirmTimeButton');
   const startButton = document.getElementById('startButton');
+  const stopButton = document.getElementById('stopButton');
   const countdownElement = document.getElementById('countdown');
   const registrationTimeInput = document.getElementById('registrationTime');
 
@@ -117,6 +118,12 @@ document.addEventListener('DOMContentLoaded', function() {
       triggerBackgroundProcess(); // Skip everything and start the background task
   });
 
+  stopButton.addEventListener('click', function() {
+        chrome.runtime.sendMessage({ action: 'stop' }, function(response) {
+            console.log(response.status);
+        });
+    });
+  
   // Handle 'NO, plan' button - show the registration time selection page
   planButton.addEventListener('click', function() {
       startNowOrPlanSection.classList.add('hidden');
