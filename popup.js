@@ -197,12 +197,5 @@ confirmTimeButton.addEventListener('click', function() {
     startCountdown(selectedTime);
     startGame();
 });
-stopButton.addEventListener('click', function() {
-    chrome.runtime.sendMessage({action: "stopBackgroundProcess"}, function(response) {
-        console.log(response.status);
-        alert("Grabbing Stopped");
-    });
-    stopButton.classList.add('hidden'); // Hide the stop button after stopping
-});
 
 });
