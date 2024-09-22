@@ -167,6 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
           }
       }, 1000);
   }
+ 
+
 
   function triggerBackgroundProcess() {
       alert("Grabbing Started");
@@ -174,4 +176,33 @@ document.addEventListener('DOMContentLoaded', function() {
           console.log(response.status);
       });
   }
+   const stopButton = document.getElementById('stopButton');
+  startNowButton.addEventListener('click', function() {
+    triggerBackgroundProcess(); 
+    stopButton.classList.remove('hidden'); // Show the stop button
+});
+
+confirmTimeButton.addEventListener('click', function() {
+    const selectedTime = new Date(registrationTimeInput.value);
+
+    if (isNaN(selectedTime.getTime())) {
+        alert('Please select a valid date and time.');
+        return;
+    }
+
+    countdownSection.classList.remove('hidden');
+    registrationSection.classList.add('hidden');
+    stopButton.classList.remove('hidden'); // Show the stop button after confirming time
+
+    startCountdown(selectedTime);
+    startGame();
+});
+stopButton.addEventListener('click', function() {
+    chrome.runtime.sendMessage({action: "stopBackgroundProcess"}, function(response) {
+        console.log(response.status);
+        alert("Grabbing Stopped");
+    });
+    stopButton.classList.add('hidden'); // Hide the stop button after stopping
+});
+
 });
